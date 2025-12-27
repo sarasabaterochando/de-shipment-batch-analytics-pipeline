@@ -14,6 +14,7 @@ This pipeline handles shipment batch data through these stages:
 The infrastructure is managed with Terraform and the workflow is orchestrated with Apache Airflow.
 
 ## Architecture
+![Architecture-diagram](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/images/Diagrama.jpg)  
 ```
 .ini files → GCS (raw) → Dataproc (PySpark) → GCS (parquet) → BigQuery → Power BI
 ```
@@ -232,6 +233,7 @@ make clean            # Clean generated files
 
 ## Power BI Integration
 
+[PowerBi](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/powerBI.gif)  
 After the data is loaded into BigQuery:
 
 1. Connect Power BI to your BigQuery project
