@@ -192,6 +192,8 @@ The pipeline runs daily and consists of two main tasks:
    - Loads data into BigQuery
    - Deletes the cluster after completion
 
+![Airflow-dags](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/images/airflow-image.jpg)
+
 ### Data Model
 
 The pipeline creates two tables in BigQuery:
