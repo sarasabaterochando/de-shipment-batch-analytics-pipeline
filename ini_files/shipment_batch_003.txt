@@ -1,0 +1,50 @@
+[SHIPMENT_BATCH]
+ShipmentBatchID=SHX17012026C
+DispatchDate=17/01/2026
+DispatchTime=062500
+CompletionDate=17/01/2026
+CompletionTime=141030
+OriginFacilityID=HUB_S02
+ShipmentCategory=BULK
+HandlingClass=HEAVY
+BatchNotes=Bulk shipment from southern distribution center
+
+[PACKAGE_TYPE_1]
+package_class=palletized goods
+total_weight_kg=01845000
+load_percentage_bp=00650
+package_count=000620
+routing_rules=Weight|palletized goods|800.00|2000.00
+destination_hubs=5
+
+[PACKAGE_TYPE_2]
+package_class=industrial parts
+total_weight_kg=02478000
+load_percentage_bp=00875
+package_count=001140
+routing_rules=Weight|industrial parts|2000.01|6000.00
+destination_hubs=6|7
+
+[PACKAGE_TYPE_3]
+package_class=machinery
+total_weight_kg=03120000
+load_percentage_bp=01100
+package_count=000310
+routing_rules=Weight|machinery|6000.01|15000.00
+destination_hubs=8
+
+[PACKAGE_TYPE_4]
+package_class=oversized freight
+total_weight_kg=01450000
+load_percentage_bp=00510
+package_count=000190
+routing_rules=Weight|oversized freight|15000.01|30000.00|Height|oversized freight|180.00|300.00
+destination_hubs=9
+
+[PACKAGE_TYPE_5]
+package_class=packaging_residue
+total_weight_kg=00000000
+load_percentage_bp=00000
+package_count=984500
+routing_rules=
+destination_hubs=

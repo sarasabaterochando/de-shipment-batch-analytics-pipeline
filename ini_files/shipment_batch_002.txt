@@ -1,0 +1,50 @@
+[SHIPMENT_BATCH]
+ShipmentBatchID=SHX16012026B
+DispatchDate=16/01/2026
+DispatchTime=081100
+CompletionDate=16/01/2026
+CompletionTime=164355
+OriginFacilityID=HUB_E03
+ShipmentCategory=EXPRESS
+HandlingClass=PRIORITY
+BatchNotes=High priority express shipment
+
+[PACKAGE_TYPE_1]
+package_class=documents
+total_weight_kg=00084500
+load_percentage_bp=00075
+package_count=002100
+routing_rules=Weight|documents|0.10|2.00
+destination_hubs=1
+
+[PACKAGE_TYPE_2]
+package_class=small parcels
+total_weight_kg=00234560
+load_percentage_bp=00205
+package_count=001540
+routing_rules=Weight|small parcels|2.01|20.00
+destination_hubs=2|3
+
+[PACKAGE_TYPE_3]
+package_class=fragile goods
+total_weight_kg=00378040
+load_percentage_bp=00330
+package_count=000980
+routing_rules=Weight|fragile goods|5.00|50.00|Fragility|fragile goods|1|3
+destination_hubs=4
+
+[PACKAGE_TYPE_4]
+package_class=secure cargo
+total_weight_kg=00965000
+load_percentage_bp=00810
+package_count=000450
+routing_rules=Weight|secure cargo|50.01|500.00
+destination_hubs=7|8
+
+[PACKAGE_TYPE_5]
+package_class=non_compliant
+total_weight_kg=00000000
+load_percentage_bp=00000
+package_count=340120
+routing_rules=
+destination_hubs=

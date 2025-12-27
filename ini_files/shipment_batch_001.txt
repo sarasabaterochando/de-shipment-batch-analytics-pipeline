@@ -1,0 +1,50 @@
+[SHIPMENT_BATCH]
+ShipmentBatchID=SHX15012026A
+DispatchDate=15/01/2026
+DispatchTime=073215
+CompletionDate=15/01/2026
+CompletionTime=132540
+OriginFacilityID=HUB_N01
+ShipmentCategory=STANDARD
+HandlingClass=REGULAR
+BatchNotes=Simulated shipment batch for regional distribution
+
+[PACKAGE_TYPE_1]
+package_class=light parcels
+total_weight_kg=00125400
+load_percentage_bp=00110
+package_count=000420
+routing_rules=Weight|light parcels|100.00|500.00
+destination_hubs=2
+
+[PACKAGE_TYPE_2]
+package_class=medium parcels
+total_weight_kg=00487530
+load_percentage_bp=00320
+package_count=001120
+routing_rules=Weight|medium parcels|500.01|1500.00
+destination_hubs=3
+
+[PACKAGE_TYPE_3]
+package_class=heavy parcels
+total_weight_kg=01245000
+load_percentage_bp=00850
+package_count=002300
+routing_rules=Weight|heavy parcels|1500.01|4000.00
+destination_hubs=4|5
+
+[PACKAGE_TYPE_4]
+package_class=oversized
+total_weight_kg=00632000
+load_percentage_bp=00420
+package_count=000860
+routing_rules=Weight|oversized|4000.01|8000.00|Length|oversized|120.00|200.00
+destination_hubs=6
+
+[PACKAGE_TYPE_5]
+package_class=handling_waste
+total_weight_kg=00000000
+load_percentage_bp=00000
+package_count=150320
+routing_rules=
+destination_hubs=

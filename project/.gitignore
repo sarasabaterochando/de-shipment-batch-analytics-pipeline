@@ -1,0 +1,6 @@
+# File with secrets
+*.env
+config/config.env
+
+# Airflow
+airflow/logs/
