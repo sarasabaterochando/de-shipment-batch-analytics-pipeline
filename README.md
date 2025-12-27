@@ -9,7 +9,7 @@ This pipeline handles shipment batch data through these stages:
 2. Process files with PySpark on Dataproc cluster
 3. Convert data to Parquet format and store in GCS
 4. Load processed data into BigQuery tables
-5. Connect Power BI to BigQuery for data cleaning and analysis
+5. Connect Power BI to BigQuery for data cleaning and analysis.  [Click here for more PowerBI details.](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/tree/main/PowerBI)
 
 The infrastructure is managed with Terraform and the workflow is orchestrated with Apache Airflow.
 
