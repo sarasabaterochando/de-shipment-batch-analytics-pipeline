@@ -2,6 +2,11 @@
 
 [Click to open in app.powerbi.com](https://app.powerbi.com/view?r=eyJrIjoiMmE1NzU4OGUtZjdmNi00ZDA1LWEzNWUtMzdkMDdmODk4MmM3IiwidCI6IjA5NDZmNDQzLTJjZGItNGNjOS1iN2VhLWUxNmQwZmY0MDEzOCJ9)
 
+## Preview
+### Operations page
+![Operations](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/images/shipment_operations.png)
+### Origins Page
+![Origins](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/images/shipment_origins.png)
 This Power BI report analyzes shipment batch data processed through a Google Cloud–based data pipeline. The data is ingested from batch .ini files, transformed using PySpark on Dataproc, stored in BigQuery, and consumed in Power BI for analytical reporting.
 
 The report is built on a well-structured analytical data model, designed to support scalable analysis and efficient querying.
