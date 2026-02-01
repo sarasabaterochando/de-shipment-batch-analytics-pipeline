@@ -1,4 +1,5 @@
 # Power BI Analytics Overview
+<iframe title="shipment_project" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMmE1NzU4OGUtZjdmNi00ZDA1LWEzNWUtMzdkMDdmODk4MmM3IiwidCI6IjA5NDZmNDQzLTJjZGItNGNjOS1iN2VhLWUxNmQwZmY0MDEzOCJ9" frameborder="0" allowFullScreen="true"></iframe>
 
 This Power BI report analyzes shipment batch data processed through a Google Cloud–based data pipeline. The data is ingested from batch .ini files, transformed using PySpark on Dataproc, stored in BigQuery, and consumed in Power BI for analytical reporting.
 
