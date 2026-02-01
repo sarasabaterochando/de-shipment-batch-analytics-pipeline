@@ -248,15 +248,15 @@ After the data is loaded into BigQuery:
 
 ### Using the Power BI Template
 
-A ready-to-use Power BI template is included in the `powerbi/` folder:
+A ready-to-use Power BI pbix file is included in the `powerbi/` folder:
 ```
 powerbi/
-└── shipment_project.pbit
+└── shipment_project.pbix
 ```
 
 To use it:
 
-1. Open `shipment_project.pbit` in Power BI Desktop
+1. Open `shipment_project.pbix` in Power BI Desktop
 2. When prompted, enter your BigQuery connection details:
    - Project ID
    - Dataset name
