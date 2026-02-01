@@ -106,26 +106,27 @@ CALCULATE(
 ```
 
 ```
+Overload Shipments = 
+-- Overload number of shipments if load_percentage_bp is > 100
+CALCULATE(
+    DISTINCTCOUNT(FactShipment[shipment_batch_ID]),
+    FactShipment[load_percentage_bp] > 100
+)
+
+
 Overloaded Shipments % = 
-VAR _totalPackages =
+-- Envíos con sobrecarga
+VAR _totalShipments =
     DISTINCTCOUNT(FactShipment[shipment_batch_ID])
-
 VAR _overloadedShipment =
-    CALCULATE(
-        DISTINCTCOUNT(FactShipment[shipment_batch_ID]),
-        FILTER(
-            VALUES(FactShipment[shipment_batch_ID]),
-            [Overload Shipment Flag] = 1
-        )
-    )
+    [Overload Shipments]
 RETURN 
-DIVIDE(_overloadedShipment,_totalPackages)
+IF(
+    ISBLANK(DIVIDE(_overloadedShipment,_totalShipments,0)),
+    0,
+    DIVIDE(_overloadedShipment,_totalShipments,0)
+)
 ```
-
-
-
-
-
 
 
 
