@@ -235,7 +235,10 @@ make clean            # Clean generated files
 
 ## Power BI Integration
 
-[PowerBI Demonstration](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/powerBI.gif)  
+[Click to open in app.powerbi.com](https://app.powerbi.com/view?r=eyJrIjoiMmE1NzU4OGUtZjdmNi00ZDA1LWEzNWUtMzdkMDdmODk4MmM3IiwidCI6IjA5NDZmNDQzLTJjZGItNGNjOS1iN2VhLWUxNmQwZmY0MDEzOCJ9)
+
+![Operations](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/images/shipment_operations.png)
+
 After the data is loaded into BigQuery:
 
 1. Connect Power BI to your BigQuery project
