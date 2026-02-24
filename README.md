@@ -265,7 +265,7 @@ The analytics output is consumed by Power BI.
 | Marts | `analytics_shipment` | `dim_destination_hubs`, `dim_handling_class`, `dim_origin_facility`, `dim_package_class`, `dim_routing_rules`, `dim_shipment_category`, `fact_shipments` |
 
 ### DBT Docs
-![Dbt documentation](https://sarasabaterochando.github.io/de-shipment-batch-analytics-pipeline/)
+[Dbt documentation](https://sarasabaterochando.github.io/de-shipment-batch-analytics-pipeline/)
 
 ## Available Make Commands
 ```bash
