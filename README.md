@@ -1,6 +1,6 @@
 # Shipment Batch Analytics Pipeline
 
-A data engineering project that processes shipment batch files using Google Cloud Platform services. The pipeline reads .ini files, processes them with PySpark on Dataproc, stores the data in BigQuery, and creates reports with Power BI.
+A data engineering project that processes shipment batch files using Google Cloud Platform services. The pipeline reads .ini files, processes them with PySpark on Dataproc, stores the data in BigQuery, transforms the data with DBT and creates reports with Power BI.
 
 ## Project Overview
 
@@ -9,14 +9,15 @@ This pipeline handles shipment batch data through these stages:
 2. Process files with PySpark on Dataproc cluster
 3. Convert data to Parquet format and store in GCS
 4. Load processed data into BigQuery tables
-5. Connect Power BI to BigQuery for data cleaning and analysis.  [Click here for more PowerBI details.](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/tree/main/PowerBI)
+5. DBT Data transformation and cleaning  withing BigQuery using SQL.
+6. Connect Power BI to BigQuery for data cleaning and analysis.  [Click here for more PowerBI details.](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/tree/main/PowerBI)
 
 The infrastructure is managed with Terraform and the workflow is orchestrated with Apache Airflow.
 
 ## Architecture
 ![Architecture-diagram](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/images/Diagrama.jpg)  
 ```
-.ini files → GCS (raw) → Dataproc (PySpark) → GCS (parquet) → BigQuery → Power BI
+.ini files → GCS (raw) → Dataproc (PySpark) → GCS (parquet) → BigQuery → dbt (Transformation) → Power BI
 ```
 
 ## Technologies Used
@@ -27,6 +28,7 @@ The infrastructure is managed with Terraform and the workflow is orchestrated wi
 - **Dataproc**: Managed Spark clusters
 - **PySpark**: Data processing
 - **BigQuery**: Data warehouse
+- **dbt (Data Build Tool)**: Data transformation and cleaning within BigQuery using SQL.
 - **Power BI**: Data visualization and analysis
 - **Docker**: Containerization for Airflow
 
@@ -43,6 +45,17 @@ project/
 │   │   └── local_to_gcs_batch_file_ingestion.py
 │   ├── .google/credentials/
 │   │   └── google_credentials.json
+│   ├── dbt  
+│   │    ├── dbt_shipment/               
+│   │    │   ├── models/
+│   │    │   │   ├── staging/            
+│   │    │   │   ├── intermediate/        
+│   │    │   │   └── marts/               
+│   │    │   │       ├── dimensions/      
+│   │    │   │       └── facts/           
+│   │    │   ├── macros/                 
+│   │    │   └── dbt_project.yml          
+│   │    └── profiles.yml             
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
@@ -111,6 +124,10 @@ BQ_DATASET=your-dataset-name
 BQ_TABLE_FACT=fact_table_name
 BQ_TABLE_DIM=dim_table_name
 BQ_LOCATION=US
+
+# DBT
+DBT_PROJECT_DIR=/opt/airflow/dbt/dbt_shipment
+DBT_PROFILES_DIR=/opt/airflow/dbt
 ```
 
 ### 2. Add Service Account Credentials
@@ -132,6 +149,7 @@ volumes:
   - ${AIRFLOW_PROJ_DIR:-.}/.google/credentials:/opt/airflow/.google/credentials
   - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
   - your_path/ini_files:/opt/airflow/ini_files  # Replace 'your_path' with your actual path
+  - your_path/airflow/dbt:/opt/airflow/dbt # Replace 'your_path' with your actual path
 ```
 
 Replace `your_path/ini_files` with the full path to your local folder containing the .ini files.
@@ -139,6 +157,12 @@ Replace `your_path/ini_files` with the full path to your local folder containing
 Example:
 ```yaml
 - /home/user/data/ini_files:/opt/airflow/ini_files
+```
+Replace `your_path/airflow/dbt` with the full path to your local folder containing your project
+
+Example:
+```yaml
+- /home/user/my_project/airflow/dbt:/opt/airflow/dbt
 ```
 
 ### 4. Deploy Infrastructure with Terraform
@@ -194,7 +218,7 @@ The pipeline runs daily and consists of two main tasks:
 
 ![Airflow-dags](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/images/airflow-image.jpg)
 
-### Data Model
+### Data Raw Model
 
 The pipeline creates two tables in BigQuery:
 
@@ -219,6 +243,30 @@ The pipeline creates two tables in BigQuery:
 - routing_rules
 - destination_hubs
 
+## Data Transformation with dbt
+The pipeline follows a Medallion Architecture approach managed by dbt to ensure data quality and modularity:
+
+* Staging Layer: Raw BigQuery tables are cleaned, fields are renamed for consistency.
+
+* Intermediate Layer: Handles complex transformations like unnesting routing rules and processing destination hubs.
+
+* Marts Layer: Organized into a Star Schema with specialized dimensions (dim_) and fact tables (fact_) optimized for Power BI performance.
+
+* Data Quality: Includes automated tests for uniqueness, non-null values, and referential integrity (defined in .yml files).
+
+### DBT Dataset structure
+The analytics output is consumed by Power BI.
+
+| Layer | Dataset | Models |
+|---|---|---|
+| Raw | `raw_shipment` | `dim_batch_shipment`, `fact_batch_shipment` |
+| Staging | `staging_shipment` | `stg_batch_metrics`, `stg_batch_shipment` |
+| Intermediate | `intermediate_shipment` | `int_destination_hubs`, `int_routing_rules` |
+| Marts | `analytics_shipment` | `dim_destination_hubs`, `dim_handling_class`, `dim_origin_facility`, `dim_package_class`, `dim_routing_rules`, `dim_shipment_category`, `fact_shipments` |
+
+### DBT Docs
+![Dbt documentation](https://sarasabaterochando.github.io/de-shipment-batch-analytics-pipeline/)
+
 ## Available Make Commands
 ```bash
 make help              # Show all available commands
@@ -235,28 +283,25 @@ make clean            # Clean generated files
 
 ## Power BI Integration
 
-[Click to open in app.powerbi.com](https://app.powerbi.com/view?r=eyJrIjoiMmE1NzU4OGUtZjdmNi00ZDA1LWEzNWUtMzdkMDdmODk4MmM3IiwidCI6IjA5NDZmNDQzLTJjZGItNGNjOS1iN2VhLWUxNmQwZmY0MDEzOCJ9)
-
-![Operations](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/images/shipment_operations.png)
-
+[PowerBI Demonstration](https://github.com/sarasabaterochando/de-shipment-batch-analytics-pipeline/blob/main/PowerBI/powerBI.gif)  
 After the data is loaded into BigQuery:
 
 1. Connect Power BI to your BigQuery project
-2. Import the two tables: `dim_batch_shipment` and `fact_batch_shipment`
+2. Import the **analytics_shipment** dataset tables
 3. Perform data cleaning and transformations in Power BI
 4. Create your analysis and visualizations
 
 ### Using the Power BI Template
 
-A ready-to-use Power BI pbix file is included in the `powerbi/` folder:
+A ready-to-use Power BI template is included in the `powerbi/` folder:
 ```
 powerbi/
-└── shipment_project.pbix
+└── shipment_project.pbit
 ```
 
 To use it:
 
-1. Open `shipment_project.pbix` in Power BI Desktop
+1. Open `shipment_project.pbit` in Power BI Desktop
 2. When prompted, enter your BigQuery connection details:
    - Project ID
    - Dataset name
