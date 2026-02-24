@@ -1,0 +1,14 @@
+dbt_shipment:
+  outputs:
+    dev:
+      dataset: raw_shipment
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: service-account
+      priority: interactive
+      project: agro-analytics-portfolio
+      threads: 1
+      type: bigquery
+      keyfile: /opt/airflow/.google/credentials/google_credentials.json
+  target: dev

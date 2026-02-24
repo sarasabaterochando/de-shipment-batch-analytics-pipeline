@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: dim_package_class
+    description: "Class package dimension"
+    columns:
+      - name: id_package_class
+        description: "Unique ID from class package"
+        tests:
+          - unique
+          - not_null
+
+      - name: package_class
+        description: "Class package name"
+        tests:
+          - not_null
+          - accepted_values:
+              config:
+                severity: error
+              values: ['Premium Delivery',
+                  'Export Goods',
+                  'Secure Cargo',
+                  'Heavy Parcels',
+                  'Customs Docs',
+                  'Industrial Parts',
+                  'Heavy Equipment',
+                  'Documents',
+                  'Container Loads',
+                  'Oversized',
+                  'Bulk Items',
+                  'Fragile Goods',
+                  'Oversized Freight',
+                  'Palletized Goods',
+                  'Small Parcels',
+                  'Air Freight',
+                  'Machinery',
+                  'Restricted Items',
+                  'Light Parcels',
+                  'Medium Parcels']
+              quote: true
+
+  - name: dim_shipment_category
+    description: "Shipment category dimension"
+    columns:
+      - name: id_shipment_category
+        tests:
+          - unique
+          - not_null
+      - name: shipment_category
+        tests:
+          - not_null
+          - accepted_values:
+              config:
+                severity: error
+              values: ['Bulk', 'Express', 'International', 'Standard']
+
+  - name: dim_origin_facility
+    description: "Origin facility dimension"
+    columns:
+      - name: id_originFacility
+        tests:
+          - unique
+          - not_null
+      - name: origin_facility
+        tests:
+          - not_null
+          - accepted_values:
+              config:
+                severity: error
+              values: [ 'Hub S02','Hub W05','Hub N06','Hub N01','Hub E07','Hub S08','Hub E03','Hub C04' ]
+
+  - name: dim_handling_class
+    description: "Handling class dimension"
+    columns:
+      - name: id_handlingClass
+        tests:
+          - unique
+          - not_null
+      - name: handling_class
+        tests:
+          - not_null
+          - accepted_values:
+              config:
+                severity: error
+              values: [ 'Fragile', 'Heavy', 'Customs', 'Regular', 'Priority' ]

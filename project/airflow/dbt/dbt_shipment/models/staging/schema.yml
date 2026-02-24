@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw_shipment
+    database: agro-analytics-portfolio
+    schema: raw_shipment
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+    loaded_at_field: creation_data
+    tables:
+      - name: dim_batch_shipment
+      - name: fact_batch_shipment
+
+models:
+  - name: stg_batch_metrics
+    description: "Staging model for shipment metrics"
+    columns:
+      - name: shipment_batch_id
+        tests:
+          - not_null
+      - name: package_class
+        tests:
+          - not_null
+
+  - name: stg_batch_shipment
+    description: "Staging model for shipment data"
+    columns:
+      - name: shipment_batch_id
+        tests:
+          - not_null

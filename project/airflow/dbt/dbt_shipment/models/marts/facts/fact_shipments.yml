@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: fact_shipments
+    description: "Fact table with shipment batch data, granularity shipment_batch_id + package_class"
+    columns:
+      - name: shipment_batch_ID
+        tests:
+          - not_null
+      - name: package_class
+        tests:
+          - not_null
+      - name: total_weight_kg
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: id_handlingClass
+        tests:
+          - not_null
+      - name: id_originFacility
+        tests:
+          - not_null
+      - name: id_package_class
+        tests:
+          - not_null
+      - name: id_shipment_category
+        tests:
+          - not_null

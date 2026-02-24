@@ -1,0 +1,19 @@
+models:
+  - name: dim_routing_rules
+    columns:
+      - name: id_routing_rule
+        tests:
+          - unique
+          - not_null
+      - name: shipment_batch_id
+        tests:
+          - not_null
+      - name: package_class
+        tests:
+          - not_null
+      - name: rule_index
+        tests:
+          - not_null
+      - name: rule_metric
+        tests:
+          - not_null

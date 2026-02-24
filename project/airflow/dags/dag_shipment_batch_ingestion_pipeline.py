@@ -3,9 +3,11 @@ from pendulum import datetime
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 import subprocess
+import os
 
 
-
+DBT_PROJECT_DIR = os.environ["DBT_PROJECT_DIR"]
+DBT_PROFILES_DIR = os.environ["DBT_PROFILES_DIR"]
 
 def run_python_gcs_storage():
     subprocess.run(["python3", "/opt/airflow/scripts/local_to_gcs_batch_file_ingestion.py"], check=True)
@@ -47,5 +49,53 @@ with DAG(
          python_callable=run_dataproc_bash,
     )
 
-    
-    upload_to_gcs >> run_dataproc_job
+    # dbt staging
+    dbt_staging = BashOperator(
+        task_id='dbt_run_staging',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select staging --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    dbt_test_staging = BashOperator(
+        task_id='dbt_test_staging',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select staging --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    # dbt intermediate
+    dbt_intermediate = BashOperator(
+        task_id='dbt_run_intermediate',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select intermediate --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    dbt_test_intermediate = BashOperator(
+        task_id='dbt_test_intermediate',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select intermediate --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    # dbt dimensions
+    dbt_dimensions = BashOperator(
+        task_id='dbt_run_dimensions',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select marts.dimensions --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    dbt_test_dimensions = BashOperator(
+        task_id='dbt_test_dimensions',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select marts.dimensions --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    # dbt facts
+    dbt_facts = BashOperator(
+        task_id='dbt_run_facts',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select marts.facts --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+    dbt_test_facts = BashOperator(
+        task_id='dbt_test_facts',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select marts.facts --profiles-dir {DBT_PROFILES_DIR}',
+    )
+
+   
+    upload_to_gcs >> run_dataproc_job \
+    >> dbt_staging >> dbt_test_staging \
+    >> dbt_intermediate >> dbt_test_intermediate \
+    >> dbt_dimensions >> dbt_test_dimensions \
+    >> dbt_facts >> dbt_test_facts 

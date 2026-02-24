@@ -86,6 +86,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/.google/credentials:/opt/airflow/.google/credentials
     - ${AIRFLOW_PROJ_DIR:-.}/scripts:/opt/airflow/scripts
     - your_path/ini_files:/opt/airflow/ini_files  # Replace 'your_path' with your actual path
+    - your_path/airflow/dbt:/opt/airflow/dbt # Replace 'your_path' with your actual path
 
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:

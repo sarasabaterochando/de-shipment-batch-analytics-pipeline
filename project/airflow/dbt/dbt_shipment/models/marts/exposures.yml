@@ -1,0 +1,18 @@
+version: 2
+
+exposures:
+  - name: shipment_project
+    type: dashboard
+    maturity: high
+    url: https://app.powerbi.com/view?r=eyJrIjoiMmE1NzU4OGUtZjdmNi00ZDA1LWEzNWUtMzdkMDdmODk4MmM3IiwidCI6IjA5NDZmNDQzLTJjZGItNGNjOS1iN2VhLWUxNmQwZmY0MDEzOCJ9
+    description: |
+      Dashboard shipment batch data portfolio.
+      Updated every day at ... .
+
+    depends_on:
+      - ref('dim_shipment_category')
+      - ref('fact_shipments')
+
+    owner:
+      name: Sara (my name)
+      email: powerbi@myemail.com

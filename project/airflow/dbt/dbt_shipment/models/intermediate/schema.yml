@@ -1,0 +1,33 @@
+# models/intermediate/schema.yml
+
+version: 2
+
+models:
+  - name: int_routing_rules
+    description: "Unnested routing rules, one row per rule per shipment+package_class"
+    columns:
+      - name: shipment_batch_id
+        tests:
+          - not_null
+      - name: package_class
+        tests:
+          - not_null
+      - name: rule_index
+        tests:
+          - not_null
+      - name: rule_metric
+        tests:
+          - not_null
+
+  - name: int_destination_hubs
+    description: "Unnested destination hubs, one row per hub per shipment+package_class"
+    columns:
+      - name: shipment_batch_id
+        tests:
+          - not_null
+      - name: package_class
+        tests:
+          - not_null
+      - name: destination_hub_id
+        tests:
+          - not_null

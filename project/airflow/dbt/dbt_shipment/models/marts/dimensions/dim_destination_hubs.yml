@@ -1,0 +1,13 @@
+models:
+  - name: dim_destination_hubs
+    columns:
+      - name: id_shipment_hub
+        tests:
+          - unique
+          - not_null
+      - name: shipment_batch_id
+        tests:
+          - not_null
+      - name: destination_hub_id
+        tests:
+          - not_null
