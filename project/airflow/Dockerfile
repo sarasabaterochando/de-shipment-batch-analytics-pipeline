@@ -45,12 +45,18 @@ RUN chmod +x scripts
 # Volver al usuario airflow para pip install
 USER airflow
 
+ENV PYTHONPATH="/opt/airflow:/opt/airflow/modules:${PYTHONPATH}"
+
 RUN pip install --no-cache-dir \
     apache-airflow-providers-postgres \
     apache-airflow-providers-amazon \
     apache-airflow-providers-google
 
 RUN pip install --no-cache-dir -r /requirements.txt
+
+RUN pip install --no-cache-dir \
+    dbt-core==1.7.* \
+    dbt-bigquery==1.7.*
 
 # Establecer usuario final
 USER ${AIRFLOW_UID}
