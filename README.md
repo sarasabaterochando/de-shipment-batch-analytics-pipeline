@@ -261,8 +261,8 @@ The analytics output is consumed by Power BI.
 |---|---|---|
 | Raw | `raw_shipment` | `dim_batch_shipment`, `fact_batch_shipment` |
 | Staging | `staging_shipment` | `stg_batch_metrics`, `stg_batch_shipment` |
-| Intermediate | `intermediate_shipment` | `int_destination_hubs`, `int_routing_rules` |
-| Marts | `analytics_shipment` | `dim_destination_hubs`, `dim_handling_class`, `dim_origin_facility`, `dim_package_class`, `dim_routing_rules`, `dim_shipment_category`, `fact_shipments` |
+| Intermediate | `intermediate_shipment` | `int_routing_rules` |
+| Marts | `analytics_shipment` | `dim_package_class`, `dim_routing_rules`, `dim_shipment_category`, `fact_shipments` |
 
 ### DBT Docs
 [Dbt documentation](https://sarasabaterochando.github.io/de-shipment-batch-analytics-pipeline/)
