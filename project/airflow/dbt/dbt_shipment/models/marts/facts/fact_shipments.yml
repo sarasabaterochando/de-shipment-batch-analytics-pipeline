@@ -2,28 +2,60 @@ version: 2
 
 models:
   - name: fact_shipments
-    description: "Fact table with shipment batch data, granularity shipment_batch_id + package_class"
+    description: "Fact table containing shipment metrics and foreign keys to dimensions."
     columns:
       - name: shipment_batch_ID
+        description: "Natural ID of the shipment batch."
         tests:
           - not_null
-      - name: package_class
+
+      - name: id_shipment_details
+        description: "Surrogate key linking to dim_shipment_details."
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_shipment_details')
+              field: id_shipment_details
+
+      - name: id_package_class
+        description: "Surrogate key linking to dim_package_class."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_package_class')
+              field: id_package_class
+
       - name: total_weight_kg
+        description: "Total weight of the batch in kilograms."
         tests:
           - not_null
           - dbt_utils.accepted_range:
               min_value: 0
-      - name: id_handlingClass
+              inclusive: true
+
+      - name: package_count
+        description: "Total number of packages in the batch."
         tests:
           - not_null
-      - name: id_originFacility
+          - dbt_utils.accepted_range:
+              min_value: 1 # Logical assumption: a shipment must have at least one package
+
+      - name: load_percentage_bp
+        description: "Load percentage in basis points or percentage."
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+
+      - name: number_destination_hubs
+        description: "Calculated count of destination hubs from the raw string."
         tests:
           - not_null
-      - name: id_package_class
+
+      - name: dispatch_date
+        description: "The date the shipment was dispatched."
         tests:
           - not_null
-      - name: id_shipment_category
-        tests:
-          - not_null
+
+      - name: completion_date
+        description: "The date the shipment was completed."

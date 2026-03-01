@@ -72,30 +72,19 @@ with DAG(
     )
 
     # dbt dimensions
-    dbt_dimensions = BashOperator(
-        task_id='dbt_run_dimensions',
-        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select marts.dimensions --profiles-dir {DBT_PROFILES_DIR}',
+    dbt_marts = BashOperator(
+        task_id='dbt_run_marts',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select marts --profiles-dir {DBT_PROFILES_DIR}',
     )
 
-    dbt_test_dimensions = BashOperator(
-        task_id='dbt_test_dimensions',
-        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select marts.dimensions --profiles-dir {DBT_PROFILES_DIR}',
+    dbt_test_marts = BashOperator(
+        task_id='dbt_test_marts',
+        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select marts --profiles-dir {DBT_PROFILES_DIR}',
     )
 
-    # dbt facts
-    dbt_facts = BashOperator(
-        task_id='dbt_run_facts',
-        bash_command=f'cd {DBT_PROJECT_DIR} && dbt run --select marts.facts --profiles-dir {DBT_PROFILES_DIR}',
-    )
-
-    dbt_test_facts = BashOperator(
-        task_id='dbt_test_facts',
-        bash_command=f'cd {DBT_PROJECT_DIR} && dbt test --select marts.facts --profiles-dir {DBT_PROFILES_DIR}',
-    )
 
    
     upload_to_gcs >> run_dataproc_job \
     >> dbt_staging >> dbt_test_staging \
     >> dbt_intermediate >> dbt_test_intermediate \
-    >> dbt_dimensions >> dbt_test_dimensions \
-    >> dbt_facts >> dbt_test_facts 
+    >> dbt_marts >> dbt_test_marts 

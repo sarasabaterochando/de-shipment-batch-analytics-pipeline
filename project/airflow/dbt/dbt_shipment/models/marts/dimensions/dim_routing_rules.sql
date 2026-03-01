@@ -2,24 +2,15 @@
     materialized='table'
 ) }}
 
-
-SELECT
+select
     {{ dbt_utils.generate_surrogate_key([
-        'shipment_batch_id',
-        'package_class',
-        'rule_index'
+        'rr.package_class',
+        'rr.rule_index'
     ]) }} AS id_routing_rule,
-    shipment_batch_id,
-    package_class,
-    rule_index,
-    rule_metric,
-    rule_context,
-    min_threshold,
-    max_limit
-FROM {{ ref('int_routing_rules') }}
-
-
-
-
-
-
+    pc.id_package_class,
+    rr.rule_index,
+    rr.rule_metric,
+    rr.min_threshold,
+    rr.max_limit
+from {{ ref('int_routing_rules') }} as rr
+left join {{ ref('dim_package_class') }} as pc on pc.package_class = rr.package_class

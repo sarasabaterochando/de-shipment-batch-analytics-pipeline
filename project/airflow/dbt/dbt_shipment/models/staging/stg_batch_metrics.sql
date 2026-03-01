@@ -3,7 +3,7 @@
 ) }}
 
 with source as (
-    select 
+    select distinct
         shipment_batch_ID,
         package_class,
         total_weight_kg,
@@ -22,7 +22,7 @@ renamed as (
         load_percentage_bp,
         package_count,
         {{ format_initcap_spaces('routing_rules') }} as routing_rules,
-        destination_hubs
+        IF(destination_hubs IS NULL OR destination_hubs = '', 0, ARRAY_LENGTH(SPLIT(destination_hubs, '|'))) AS number_destination_hubs
     from 
         source
 

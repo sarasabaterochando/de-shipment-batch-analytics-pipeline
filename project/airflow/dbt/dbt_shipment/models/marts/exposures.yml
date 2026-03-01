@@ -10,9 +10,9 @@ exposures:
       Updated every day at ... .
 
     depends_on:
-      - ref('dim_shipment_category')
+      - ref('dim_shipment_details')
       - ref('fact_shipments')
 
     owner:
-      name: Sara (my name)
+      name: (my name)
       email: powerbi@myemail.com

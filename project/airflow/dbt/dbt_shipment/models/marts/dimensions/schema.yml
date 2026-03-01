@@ -39,13 +39,19 @@ models:
                   'Medium Parcels']
               quote: true
 
-  - name: dim_shipment_category
-    description: "Shipment category dimension"
+  - name: dim_shipment_details
+    description: "Shipment details dimension"
     columns:
-      - name: id_shipment_category
+      - name: id_shipment_details
         tests:
           - unique
           - not_null
+      
+      - name: shipment_batch_ID
+        tests:
+          - unique
+          - not_null
+
       - name: shipment_category
         tests:
           - not_null
@@ -54,28 +60,14 @@ models:
                 severity: error
               values: ['Bulk', 'Express', 'International', 'Standard']
 
-  - name: dim_origin_facility
-    description: "Origin facility dimension"
-    columns:
-      - name: id_originFacility
-        tests:
-          - unique
-          - not_null
       - name: origin_facility
         tests:
           - not_null
           - accepted_values:
               config:
                 severity: error
-              values: [ 'Hub S02','Hub W05','Hub N06','Hub N01','Hub E07','Hub S08','Hub E03','Hub C04' ]
+              values: [ 'Hub S02','Hub W05','Hub N06','Hub N01','Hub E07','Hub S08','Hub E03','Hub C04' ]  
 
-  - name: dim_handling_class
-    description: "Handling class dimension"
-    columns:
-      - name: id_handlingClass
-        tests:
-          - unique
-          - not_null
       - name: handling_class
         tests:
           - not_null
@@ -83,3 +75,43 @@ models:
               config:
                 severity: error
               values: [ 'Fragile', 'Heavy', 'Customs', 'Regular', 'Priority' ]
+
+  - name: dim_routing_rules
+    description: "Dimension table containing specific routing rules for each package class."
+    columns:
+      - name: id_routing_rule
+        description: "Primary key. Surrogate key based on package_class and rule_index."
+        tests:
+          - unique
+          - not_null
+
+      - name: id_package_class
+        description: "Foreign key linking to dim_package_class."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_package_class')
+              field: id_package_class
+
+      - name: rule_index
+        description: "The sequence index of the rule for a given package class."
+        tests:
+          - not_null
+
+      - name: rule_metric
+        description: "The metric being evaluated (e.g., Weight, Height)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Weight', 'Height', 'Clearance', 'Fragility', 'Length'] 
+
+      - name: min_threshold
+        description: "Minimum value for the rule to apply."
+       
+
+      - name: max_limit
+        description: "Maximum limit for the rule."
+        
+  
+
+      
